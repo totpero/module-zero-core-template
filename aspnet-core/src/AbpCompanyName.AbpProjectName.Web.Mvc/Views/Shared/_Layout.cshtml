@@ -8,7 +8,7 @@
 @using AbpCompanyName.AbpProjectName.Web.Resources
 @using AbpCompanyName.AbpProjectName.Web.Views.Shared.Components.SideBarNav
 @using AbpCompanyName.AbpProjectName.Web.Views.Shared.Components.SideBarUserArea
-@using AbpCompanyName.AbpProjectName.Web.Views.Shared.Components.TopBarLanguageSwitch
+@using AbpCompanyName.AbpProjectName.Web.Views.Shared.Components.RightNavbarLanguageSwitch
 @using AbpCompanyName.AbpProjectName.Web.Views.Shared.Components.RightSideBar
 @inject AbpCompanyName.AbpProjectName.Timing.AppTimes AppTimes
 @inject IAbpAntiForgeryManager AbpAntiForgeryManager
@@ -111,7 +111,7 @@
                     <li><a href="javascript:void(0);" class="js-search" data-close="true"><i class="material-icons">search</i></a></li>
                     <!-- #END# Call Search -->
 
-                    @await Component.InvokeAsync(typeof(TopBarLanguageSwitchViewComponent))
+                    @await Component.InvokeAsync(typeof(RightNavbarLanguageSwitchViewComponent))
 
                     <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">more_vert</i></a></li>
                 </ul>

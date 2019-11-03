@@ -1,0 +1,16 @@
+﻿@using AbpCompanyName.AbpProjectName.Web.Views.Shared.Components.RightNavbarUserMenu
+@model RightNavbarUserMenuViewModel
+
+<li class="nav-item dropdown nav-user-menu">
+    <a href="#" class="nav-link" data-toggle="dropdown">
+        <img class="img-circle elevation-2" src="~/libs/admin-lte/dist/img/avatar5.png" alt="User Image">
+        <span class="hidden-xs">@Html.Raw(Model.GetShownLoginName())</span>
+        <b class="fas fa-caret-down"></b>
+    </a>
+    <div class="dropdown-menu dropdown-menu-right">
+        <a class="dropdown-item" href="@Url.Action(" Logout", "Account" , new { area=string.Empty })">
+            <i class="fas fa-sign-out-alt"></i>
+            @L("Logout")
+        </a>
+    </div>
+</li>

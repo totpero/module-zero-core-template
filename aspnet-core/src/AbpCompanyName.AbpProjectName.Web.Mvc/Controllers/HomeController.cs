@@ -4,7 +4,7 @@ using AbpCompanyName.AbpProjectName.Controllers;
 
 namespace AbpCompanyName.AbpProjectName.Web.Controllers
 {
-    //[AbpMvcAuthorize]
+    [AbpMvcAuthorize]
     public class HomeController : AbpProjectNameControllerBase
     {
         public ActionResult Index()

@@ -1,24 +1,27 @@
 ﻿(function ($) {
-
     var _tenantService = abp.services.app.tenant;
     var _$modal = $('#TenantEditModal');
-    var _$form = $('form[name=TenantEditForm]');
+    var _$form = _$modal.find('form');
 
     function save() {
-        
         if (!_$form.valid()) {
             return;
         }
 
-        var tenant = _$form.serializeFormToObject(); //serializeFormToObject is defined in main.js
-
+        var tenant = _$form.serializeFormToObject(); 
         abp.ui.setBusy(_$form);
-        _tenantService.update(tenant).done(function () {
-            _$modal.modal('hide');
-            location.reload(true); //reload page to see edited tenant!
-        }).always(function () {
-            abp.ui.clearBusy(_$modal);
-        });
+        setTimeout(function () {
+
+            _tenantService.update(tenant).done(function () {
+                _$modal.modal('hide');
+                _$form[0].reset();
+                abp.event.trigger('tenant.edited', tenant);
+            }).always(function () {
+                abp.ui.clearBusy(_$modal);
+            });
+        }, 5000);
+
+
     }
 
     //Handle save button click
@@ -34,8 +37,6 @@
             save();
         }
     });
-
-    $.AdminBSB.input.activate(_$form);
 
     _$modal.on('shown.bs.modal', function () {
         _$form.find('input[type=text]:first').focus();

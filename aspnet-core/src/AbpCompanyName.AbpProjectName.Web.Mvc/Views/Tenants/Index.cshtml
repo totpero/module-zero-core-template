@@ -1,130 +1,126 @@
-﻿@using Abp.Authorization.Users
-@using Abp.MultiTenancy
-@using AbpCompanyName.AbpProjectName.MultiTenancy
-@using AbpCompanyName.AbpProjectName.Web.Startup
+﻿@using AbpCompanyName.AbpProjectName.Web.Startup
 @model Abp.Application.Services.Dto.PagedResultDto<AbpCompanyName.AbpProjectName.MultiTenancy.Dto.TenantDto>
 @{
-    ViewBag.CurrentPageName = PageNames.Tenants; // The menu item will be active for this page.
+    ViewBag.Title = L("Tenants");
+    ViewBag.CurrentPageName = PageNames.Tenants;
 }
-@*
-    @section scripts
+@section scripts
     {
-        <environment names="Development">
-            <script src="~/view-resources/Views/Tenants/Index.js" asp-append-version="true"></script>
-        </environment>
+    <environment names="Development">
+        <script src="~/view-resources/Views/Tenants/Index.js" asp-append-version="true"></script>
+    </environment>
 
-        <environment names="Staging,Production">
-            <script src="~/view-resources/Views/Tenants/Index.min.js" asp-append-version="true"></script>
-        </environment>
-    }
-    <div class="row clearfix">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="card">
-                <div class="header">
-                    <h2>
-                        @L("Tenants")
-                    </h2>
-                    <ul class="header-dropdown m-r--5">
-                        <li class="dropdown">
-                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                <i class="material-icons">more_vert</i>
-                            </a>
-                            <ul class="dropdown-menu pull-right">
-                                <li><a id="RefreshButton" href="javascript:void(0);" class="waves-effect waves-block"><i class="material-icons">refresh</i>@L("Refresh")</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-                <div class="body table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>@L("TenancyName")</th>
-                                <th>@L("Name")</th>
-                                <th>@L("IsActive")</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var tenant in Model.Items)
-                            {
-                                <tr>
-                                    <td>@tenant.TenancyName</td>
-                                    <td>@tenant.Name</td>
-                                    <td><i class="material-icons" style="color:@(tenant.IsActive ? "green":"red");">@(tenant.IsActive ? "check_box" : "indeterminate_check_box")</i></td>
-                                    <td class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                            <i class="material-icons">menu</i>
-                                        </a>
-                                        <ul class="dropdown-menu pull-right">
-                                            <li><a href="#" class="waves-effect waves-block edit-tenant" data-tenant-id="@tenant.Id" data-toggle="modal" data-target="#TenantEditModal"><i class="material-icons">edit</i>@L("Edit")</a></li>
-                                            <li><a href="#" class="waves-effect waves-block delete-tenant" data-tenant-id="@tenant.Id" data-tenancy-name="@tenant.TenancyName"><i class="material-icons">delete_sweep</i>@L("Delete")</a></li>
-                                        </ul>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                    <button type="button" class="btn btn-primary btn-circle waves-effect waves-circle waves-float pull-right" data-toggle="modal" data-target="#TenantCreateModal">
-                        <i class="material-icons">add</i>
-                    </button>
+    <environment names="Staging,Production">
+        <script src="~/view-resources/Views/Tenants/Index.min.js" asp-append-version="true"></script>
+    </environment>
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <h1>@L("Tenants")</h1>
+            </div>
+            <div class="col-sm-6">
+                <a href="#" data-toggle="modal" data-target="#TenantCreateModal" class="btn bg-blue float-sm-right">
+                    <i class="fa fa-plus-square"></i>
+                    @L("Create")
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <!--Use for bulk actions-->
+                            </div>
+                            <div class="col-md-6">
+                                <div class="abp-advanced-search">
+                                    <div class="input-group">
+                                        <button type="button" class="btn bg-blue btn-search input-group-prepend">
+                                            <span class="fa fa-search" aria-hidden="true"></span>
+                                        </button>
+                                        <input type="text" class="form-control" placeholder="@L("TenancyName")" />
+                                        <div class="dropdown input-group-append">
+                                            <button type="button"
+                                                    class="btn btn-default dropdown-toggle"
+                                                    data-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                <i class="fa fa-filter"></i>
+                                                &nbsp;
+                                                <span class="fa fa-angle-down"></span>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-right" role="menu" style="padding: 0">
+                                                <div class="card" style="margin-bottom: 0">
+                                                    <form id="TenantsSearchForm" class="form-horizontal">
+                                                        <div class="card-body">
+                                                            <div class="form-group row">
+                                                                <label class="col-md-3 col-form-label">@L("Name")</label>
+                                                                <div class="col-md-10">
+                                                                    <input name="Name" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label class="col-md-3 col-form-label">@L("IsActive")</label>
+                                                                <div class="col-md-10">
+                                                                    <div class="checkbox">
+                                                                        <label>
+                                                                            <input type="checkbox" name="IsActive" id="isActiveFilterFalse" class="is-active-filter" value="false" checked />
+                                                                            @L("Yes")
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="checkbox">
+                                                                        <label>
+                                                                            <input name="no" type="checkbox" checked>
+                                                                            <input type="checkbox" name="IsActive" id="isActiveFilterTrue" class="is-active-filter" value="true" checked />
+                                                                            @L("No")
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-footer">
+                                                            <button type="button" class="btn btn-default">@L("Clear")</button>
+                                                            <button type="button" class="btn btn-info btn-search float-right">@L("Search")</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <table id="TenantsTable" class="table table-bordered table-striped dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 150px">@L("Actions")</th>
+                                            <th>@L("TenancyName")</th>
+                                            <th>@L("Name")</th>
+                                            <th>@L("IsActive")</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="modal fade" id="TenantCreateModal" tabindex="-1" role="dialog" aria-labelledby="TenantCreateModalLabel" data-backdrop="static">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <form name="tenantCreateForm" role="form" novalidate class="form-validation">
-                    <div class="modal-header">
-                        <h4 class="modal-title">
-                            <span>@L("CreateNewTenant")</span>
-                        </h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <input class="form-control" type="text" name="TenancyName" required maxlength="@AbpTenantBase.MaxTenancyNameLength" minlength="2">
-                                <label class="form-label">@L("TenancyName")</label>
-                            </div>
-                        </div>
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <input type="text" name="Name" class="form-control" required maxlength="@Tenant.MaxNameLength">
-                                <label class="form-label">@L("Name")</label>
-                            </div>
-                        </div>
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <input type="text" name="ConnectionString" class="form-control" maxlength="@AbpTenantBase.MaxConnectionStringLength">
-                                <label class="form-label">@L("DatabaseConnectionString") (@L("Optional"))</label>
-                            </div>
-                        </div>
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <input type="email" name="AdminEmailAddress" class="form-control" required maxlength="@AbpUserBase.MaxEmailAddressLength">
-                                <label class="form-label">@L("AdminEmailAddress")</label>
-                            </div>
-                        </div>
-                        <div class="checkbox">
-                            <input type="checkbox" name="IsActive" value="true" id="CreateTenantIsActive" class="filled-in" checked />
-                            <label for="CreateTenantIsActive">@L("IsActive")</label>
-                        </div>
-                        <p>@L("DefaultPasswordIs", AbpCompanyName.AbpProjectName.Authorization.Users.User.DefaultPassword)</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">@L("Cancel")</button>
-                        <button type="submit" class="btn btn-primary waves-effect">@L("Save")</button>
-                    </div>
-                </form>
-            </div>
+@await Html.PartialAsync("~/Views/Tenants/_CreateModal.cshtml")
+
+<div class="modal fade" id="TenantEditModal" data-backdrop="static">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
         </div>
     </div>
-
-    <div class="modal fade" id="TenantEditModal" tabindex="-1" role="dialog" aria-labelledby="TenantEditModalLabel" data-backdrop="static">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-
-            </div>
-        </div>
-    </div>*@
+</div>

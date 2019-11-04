@@ -43,13 +43,13 @@
     //Configure validator
     $.validator.setDefaults({
         highlight: function (element) {
-            $(element).closest('.form-group').addClass('has-error');
+            $(element).addClass('is-invalid');
         },
         unhighlight: function (element) {
-            $(element).closest('.form-group').removeClass('has-error');
+            $(element).removeClass('is-invalid');
         },
-        errorElement: 'span',
-        errorClass: 'help-block',
+        errorElement: 'p',
+        errorClass: 'text-danger',
         errorPlacement: function (error, element) {
             if (element.parent('.input-group').length) {
                 error.insertAfter(element.parent());

@@ -3,18 +3,22 @@
     var l = abp.localization.getSource('AbpProjectName');
     var _modal = $('#TenantCreateModal');
     var _$form = _modal.find('form');
+    var _$table = $('#TenantsTable');
 
-    var _$tenantsTable = $('#TenantsTable').DataTable({
+    var _$tenantsTable = _$table.DataTable({
         paging: true,
         serverSide: true,
         ajax: function (data, callback, settings) {
             var filters = $('#TenantsSearchForm').serializeFormToObject();
+            abp.ui.setBusy(_$table);
             _tenantService.getAll({ keyword: filters.name }).done(function (res) {
                 callback({
                     recordsTotal: res.totalCount,
                     recordsFiltered: res.totalCount,
                     data: res.items
                 });
+            }).done(() => {
+                abp.ui.clearBusy(_$table);
             });
         },
         buttons: [
@@ -127,10 +131,12 @@
 
     function deleteTenant(tenantId, tenancyName) {
         abp.message.confirm(
+
             abp.utils.formatString(
                 abp.localization.localize('AreYouSureWantToDelete', 'AbpProjectName'),
                 tenancyName
             ),
+            null,
             function (isConfirmed) {
                 if (isConfirmed) {
                     _tenantService

@@ -9,13 +9,16 @@
         paging: true,
         serverSide: true,
         ajax: function (data, callback, settings) {
-            var filters = $('#TenantsSearchForm').serializeFormToObject();
+            var filter = $('#TenantsSearchForm').serializeFormToObject(true);
+            filter.maxResultCount = data.length;
+            filter.skipCount = data.start;
+
             abp.ui.setBusy(_$table);
-            _tenantService.getAll({ keyword: filters.name }).done(function (res) {
+            _tenantService.getAll(filter).done(function (result) {
                 callback({
-                    recordsTotal: res.totalCount,
-                    recordsFiltered: res.totalCount,
-                    data: res.items
+                    recordsTotal: result.totalCount,
+                    recordsFiltered: result.totalCount,
+                    data: result.items
                 });
             }).done(() => {
                 abp.ui.clearBusy(_$table);
@@ -25,9 +28,7 @@
             {
                 name: 'refresh',
                 text: '<i class="fas fa-redo-alt style="padding-left: 5px"></i>',
-                action: function (foo) {
-                    _$tenantsTable.draw(false);
-                }
+                action: () => _$tenantsTable.draw(false)
             }
         ],
         columnDefs: [
@@ -131,7 +132,6 @@
 
     function deleteTenant(tenantId, tenancyName) {
         abp.message.confirm(
-
             abp.utils.formatString(
                 abp.localization.localize('AreYouSureWantToDelete', 'AbpProjectName'),
                 tenancyName

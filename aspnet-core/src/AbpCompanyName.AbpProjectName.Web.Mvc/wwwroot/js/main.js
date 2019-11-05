@@ -18,7 +18,7 @@
     });
 
     //serializeFormToObject plugin for jQuery
-    $.fn.serializeFormToObject = function () {
+    $.fn.serializeFormToObject = function (camelCased = false) {
         //serialize to array
         var data = $(this).serializeArray();
 
@@ -30,6 +30,10 @@
         //map to object
         var obj = {};
         data.map(function (x) { obj[x.name] = x.value; });
+
+        if (camelCased && camelCased === true) {
+            return convertToCamelCasedObject(obj);
+        }
 
         return obj;
     };
@@ -78,4 +82,42 @@
         }, 500);
     });
 
+    function convertToCamelCasedObject(obj) {
+        var newObj, origKey, newKey, value;
+        if (obj instanceof Array) {
+            return obj.map(function (value) {
+                if (typeof value === 'object') {
+                    value = convertToCamelCasedObject(value);
+                }
+                return value;
+            });
+        } else {
+            newObj = {};
+            for (origKey in obj) {
+                if (obj.hasOwnProperty(origKey)) {
+                    newKey = (
+                        origKey.charAt(0).toLowerCase() + origKey.slice(1) || origKey
+                    ).toString();
+                    value = obj[origKey];
+                    if (
+                        value instanceof Array ||
+                        (value !== null && value.constructor === Object)
+                    ) {
+                        value = convertToCamelCasedObject(value);
+                    }
+                    newObj[newKey] = value;
+                }
+            }
+        }
+        return newObj;
+    }
+
+    $(document).on('click', '.abp-advanced-search-dd-menu', function (e) {
+        e.stopPropagation();
+    });
+
+    $('.abp-advanced-search-dd').on('hide.bs.dropdown.abp-advanced-search-dd-menu', function (e) {
+        // TODO
+        // UX tip: Dont hide when search and clear buttons clicked
+    });
 })(jQuery);

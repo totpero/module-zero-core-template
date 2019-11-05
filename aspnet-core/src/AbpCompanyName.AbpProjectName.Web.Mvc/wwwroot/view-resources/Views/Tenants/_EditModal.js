@@ -8,20 +8,16 @@
             return;
         }
 
-        var tenant = _$form.serializeFormToObject(); 
+        var tenant = _$form.serializeFormToObject();
+
         abp.ui.setBusy(_$form);
-        setTimeout(function () {
-
-            _tenantService.update(tenant).done(function () {
-                _$modal.modal('hide');
-                _$form[0].reset();
-                abp.event.trigger('tenant.edited', tenant);
-            }).always(function () {
-                abp.ui.clearBusy(_$modal);
-            });
-        }, 5000);
-
-
+        _tenantService.update(tenant).done(function () {
+            _$modal.modal('hide');
+            _$form[0].reset();
+            abp.event.trigger('tenant.edited', tenant);
+        }).always(function () {
+            abp.ui.clearBusy(_$modal);
+        });
     }
 
     //Handle save button click

@@ -1,10 +1,6 @@
-﻿@using AbpCompanyName.AbpProjectName.Web.Views.Shared.Components.RightNavbarUserMenu
-@model RightNavbarUserMenuViewModel
-
-<li class="nav-item dropdown nav-user-menu">
+﻿<li class="nav-item dropdown nav-user-menu">
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
         <img class="user-image img-circle elevation-2" src="~/libs-ext/admin-lte/dist/img/avatar5.png" alt="User Image">
-        <span class="d-none d-md-inline">@Html.Raw(Model.GetShownLoginName())</span>
     </a>
     <div class="dropdown-menu dropdown-menu-left">
         <a class="dropdown-item" asp-controller="Account" asp-action="Logout">

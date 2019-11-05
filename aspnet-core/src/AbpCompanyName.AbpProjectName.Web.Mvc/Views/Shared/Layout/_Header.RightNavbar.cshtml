@@ -1,8 +1,7 @@
 ﻿@using AbpCompanyName.AbpProjectName.Web.Views.Shared.Components.RightNavbarLanguageSwitch
-@using AbpCompanyName.AbpProjectName.Web.Views.Shared.Components.RightNavbarUserMenu
 <ul class="navbar-nav ml-auto">
     @await Component.InvokeAsync(typeof(RightNavbarLanguageSwitchViewComponent))
-    @await Component.InvokeAsync(typeof(RightNavbarUserMenuViewComponent))
+    @await Html.PartialAsync("_Header.RightNavbar.UserMenu.cshtml")
     @await Html.PartialAsync("_Header.RightNavbar.Messages.cshtml")
     @await Html.PartialAsync("_Header.RightNavbar.Notifications.cshtml")
     <li class="nav-item">

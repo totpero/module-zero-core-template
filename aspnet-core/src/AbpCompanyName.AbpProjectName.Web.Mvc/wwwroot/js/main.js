@@ -1,5 +1,4 @@
 ﻿(function ($) {
-
     //Notification handler
     abp.event.on('abp.notifications.received', function (userNotification) {
         abp.notifications.showUiNotifyForUserNotification(userNotification);
@@ -43,18 +42,17 @@
         $.blockUI.defaults.baseZ = 2000;
     }
 
-
     //Configure validator
     $.validator.setDefaults({
-        highlight: function (element) {
-            $(element).addClass('is-invalid');
+        highlight: (el) => {
+            $(el).addClass('is-invalid');
         },
-        unhighlight: function (element) {
-            $(element).removeClass('is-invalid');
+        unhighlight: (el) => {
+            $(el).removeClass('is-invalid');
         },
         errorElement: 'p',
         errorClass: 'text-danger',
-        errorPlacement: function (error, element) {
+        errorPlacement: (error, element) => {
             if (element.parent('.input-group').length) {
                 error.insertAfter(element.parent());
             } else {
@@ -63,29 +61,10 @@
         }
     });
 
-    function initAdvSearch() {
-        $('.abp-advanced-search').each(function (i, obj) {
-            var $advSearch = $(obj);
-            var advSearchWidth = 0;
-            $advSearch.each(function () {
-                advSearchWidth += parseInt($(this).width(), 10);
-            });
-            $advSearch.find('.dropdown-menu').width(advSearchWidth);
-        });
-    }
-    initAdvSearch();
-
-    $(window).resize(function () {
-        clearTimeout(window.resizingFinished);
-        window.resizingFinished = setTimeout(function () {
-            initAdvSearch();
-        }, 500);
-    });
-
     function convertToCamelCasedObject(obj) {
         var newObj, origKey, newKey, value;
         if (obj instanceof Array) {
-            return obj.map(function (value) {
+            return obj.map(value => {
                 if (typeof value === 'object') {
                     value = convertToCamelCasedObject(value);
                 }
@@ -112,12 +91,44 @@
         return newObj;
     }
 
-    $(document).on('click', '.abp-advanced-search-dd-menu', function (e) {
-        e.stopPropagation();
+    function initAdvSearch() {
+        $('.abp-advanced-search').each((i, obj) => {
+            var $advSearch = $(obj);
+            setAdvSearchDropdownMenuWidth($advSearch);
+            setAdvSearchStopingPropagations($advSearch);
+        });
+    }
+
+    initAdvSearch();
+
+    $(window).resize(() => {
+        clearTimeout(window.resizingFinished);
+        window.resizingFinished = setTimeout(() => {
+            initAdvSearch();
+        }, 500);
     });
 
-    $('.abp-advanced-search-dd').on('hide.bs.dropdown.abp-advanced-search-dd-menu', function (e) {
-        // TODO
-        // UX tip: Dont hide when search and clear buttons clicked
-    });
+    function setAdvSearchDropdownMenuWidth($advSearch) {
+        var advSearchWidth = 0;
+        $advSearch.each((i, obj) => {
+            advSearchWidth += parseInt($(obj).width(), 10);
+        });
+        $advSearch.find('.dropdown-menu').width(advSearchWidth)
+    }
+
+    function setAdvSearchStopingPropagations($advSearch) {
+        $advSearch.find('.dd-menu, .btn-search, .txt-search')
+            .on('click', (e) => {
+                e.stopPropagation();
+            });
+    }
+
+    $.fn.clearForm = function () {
+        var $this = $(this);
+        $this.validate().resetForm();
+        $('[name]', $this).each((i, obj) => {
+            $(obj).removeClass('is-invalid');
+        });
+        $this[0].reset();
+    };
 })(jQuery);

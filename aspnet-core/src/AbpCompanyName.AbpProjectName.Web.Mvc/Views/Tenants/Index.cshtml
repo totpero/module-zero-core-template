@@ -14,8 +14,7 @@
         <script src="~/view-resources/Views/Tenants/Index.min.js" asp-append-version="true"></script>
     </environment>
 }
-
-<div class="content-header">
+<section class="content-header">
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6">
@@ -29,13 +28,13 @@
             </div>
         </div>
     </div>
-</div>
-<div class="content">
+</section>
+<section class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-12">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-header">
                         <div class="row">
                             <div class="col-md-6">
                                 <!--Use for bulk actions-->
@@ -43,30 +42,30 @@
                             <div class="col-md-6">
                                 @await Html.PartialAsync("~/Views/Tenants/Index.AdvancedSearch.cshtml")
                             </div>
-                            <div class="col-md-12">
-                                <table id="TenantsTable" class="table table-bordered table-striped dataTable">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 150px">@L("Actions")</th>
-                                            <th>@L("TenancyName")</th>
-                                            <th>@L("Name")</th>
-                                            <th>@L("IsActive")</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
                         </div>
+                    </div>
+                    <div class="card-body">
+                        <table id="TenantsTable" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th style="width: 150px">@L("Actions")</th>
+                                    <th>@L("TenancyName")</th>
+                                    <th>@L("Name")</th>
+                                    <th>@L("IsActive")</th>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 
 @await Html.PartialAsync("~/Views/Tenants/_CreateModal.cshtml")
 
 <div class="modal fade" id="TenantEditModal" data-backdrop="static">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
         </div>
     </div>

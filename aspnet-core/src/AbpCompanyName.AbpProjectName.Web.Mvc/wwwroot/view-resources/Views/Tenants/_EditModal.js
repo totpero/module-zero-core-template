@@ -1,7 +1,8 @@
 ﻿(function ($) {
-    var _tenantService = abp.services.app.tenant;
-    var _$modal = $('#TenantEditModal');
-    var _$form = _$modal.find('form');
+    var _tenantService = abp.services.app.tenant,
+        l = abp.localization.getSource('AbpProjectName'),
+        _$modal = $('#TenantEditModal'),
+        _$form = _$modal.find('form');
 
     function save() {
         if (!_$form.valid()) {
@@ -13,7 +14,7 @@
         abp.ui.setBusy(_$form);
         _tenantService.update(tenant).done(function () {
             _$modal.modal('hide');
-            _$form[0].reset();
+            abp.notify.info(l('SavedSuccessfully'));
             abp.event.trigger('tenant.edited', tenant);
         }).always(function () {
             abp.ui.clearBusy(_$modal);

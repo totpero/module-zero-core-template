@@ -25,7 +25,7 @@ namespace AbpCompanyName.AbpProjectName.Web.Controllers
             return View(output);
         }
 
-        public async Task<ActionResult> EditTenantModal(int tenantId)
+        public async Task<ActionResult> EditModal(int tenantId)
         {
             var tenantDto = await _tenantAppService.Get(new EntityDto(tenantId));
             return View("_EditModal", tenantDto);

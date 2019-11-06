@@ -1,9 +1,9 @@
 ﻿(function ($) {
-    var _tenantService = abp.services.app.tenant;
-    var l = abp.localization.getSource('AbpProjectName');
-    var _modal = $('#TenantCreateModal');
-    var _$form = _modal.find('form');
-    var _$table = $('#TenantsTable');
+    var _tenantService = abp.services.app.tenant,
+        l = abp.localization.getSource('AbpProjectName'),
+        _modal = $('#TenantCreateModal'),
+        _$form = _modal.find('form'),
+        _$table = $('#TenantsTable');
 
     var _$tenantsTable = _$table.DataTable({
         paging: true,
@@ -27,7 +27,7 @@
         buttons: [
             {
                 name: 'refresh',
-                text: '<i class="fas fa-redo-alt style="padding-left: 5px"></i>',
+                text: '<i class="fas fa-redo-alt"></i>',
                 action: () => _$tenantsTable.draw(false)
             }
         ],
@@ -38,24 +38,19 @@
                 sortable: false,
                 autoWidth: false,
                 defaultContent: '',
-                render: function (data, type, row, meta) {
+                render: (data, type, row, meta) => {
                     return [
-                        '<div class="dropdown">',
-                        '   <a href="#" class="btn bg-secondary dropdown-toggle" data-toggle="dropdown">',
-                        `       <span>${l('Actions')}</span>`,
-                        '   </a>',
-                        '   <ul class="dropdown-menu p-0">',
-                        '       <li class="dropdown-item">',
-                        `           <a href="#" class="btn-block edit-tenant" data-tenant-id="${row.id}" data-toggle="modal" data-target="#TenantEditModal">`,
-                        `               <i class="fas fa-pencil-alt"></i> ${l('Edit')}`,
-                        '           </a>',
-                        '       </li>',
-                        '       <li class="dropdown-item">',
-                        `           <a href="#" class="btn-block delete-tenant" data-tenant-id="${row.id}" data-tenancy-name="${row.tenancyName}">`,
-                        `               <i class="fas fa-trash"></i> ${l('Delete')}`,
-                        '           </a>',
-                        '       </li>',
-                        '   </ul>',
+                        '<div class="btn-group">',
+                        `   <button type="button" class="btn bg-secondary edit-tenant" data-tenant-id="${row.id}" data-toggle="modal" data-target="#TenantEditModal">`,
+                        `       <i class="fas fa-pencil-alt"></i> ${l('Edit')}`,
+                        '   </button>',
+                        '   <button type="button" class="btn bg-secondary dropdown-toggle dropdown-icon" data-toggle="dropdown">',
+                        '   </button>',
+                        '   <div class="dropdown-menu" role="menu">',
+                        `     <a href="#" class="dropdown-item delete-tenant" data-tenant-id="${row.id}" data-tenancy-name="${row.tenancyName}">`,
+                        `         <i class="fas fa-trash"></i> ${l('Delete')}`,
+                        '     </a>',
+                        '   </div>',
                         '</div>'
                     ].join('');
                 }
@@ -74,8 +69,7 @@
                 targets: 3,
                 data: 'isActive',
                 sortable: false,
-                render: data =>
-                    `<input type="checkbox" disabled ${data ? 'checked' : ''}>`
+                render: data => `<input type="checkbox" disabled ${data ? 'checked' : ''}>`
             }
         ]
     });
@@ -96,6 +90,7 @@
             .done(function () {
                 _modal.modal('hide');
                 _$form[0].reset();
+                abp.notify.info(l('SavedSuccessfully'));
                 _$tenantsTable.ajax.reload();
             })
             .always(function () {
@@ -111,12 +106,10 @@
     });
 
     $(document).on('click', '.edit-tenant', function (e) {
-        e.preventDefault();
-
         var tenantId = $(this).attr('data-tenant-id');
 
         abp.ajax({
-            url: abp.appPath + 'Tenants/EditTenantModal?tenantId=' + tenantId,
+            url: abp.appPath + 'Tenants/EditModal?tenantId=' + tenantId,
             type: 'POST',
             dataType: 'html',
             success: function (content) {
@@ -133,7 +126,7 @@
     function deleteTenant(tenantId, tenancyName) {
         abp.message.confirm(
             abp.utils.formatString(
-                abp.localization.localize('AreYouSureWantToDelete', 'AbpProjectName'),
+                l('AreYouSureWantToDelete'),
                 tenancyName
             ),
             null,
@@ -144,6 +137,7 @@
                             id: tenantId
                         })
                         .done(function () {
+                            abp.notify.info(l('SuccessfullyDeleted'));
                             _$tenantsTable.ajax.reload();
                         });
                 }
@@ -151,12 +145,13 @@
         );
     }
 
-    _modal.on('shown.bs.modal', function () {
+    _modal.on('shown.bs.modal', () => {
         _modal.find('input:not([type=hidden]):first').focus();
+    }).on('hidden.bs.modal', () => {
+        _$form.clearForm();
     });
 
     $('.btn-search').on('click', function (e) {
-        e.preventDefault();
         _$tenantsTable.ajax.reload();
     });
 })(jQuery);

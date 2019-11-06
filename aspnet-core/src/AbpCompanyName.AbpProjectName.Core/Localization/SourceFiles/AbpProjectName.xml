@@ -28,6 +28,7 @@
     <text name="EmailAddress" value="Email address" />
     <text name="Tenants" value="Tenants" />
     <text name="SavedSuccessfully" value="Saved successfully" />
+    <text name="SuccessfullyDeleted">Successfully deleted.</text>
     <text name="CreateNewTenant" value="Create new tenant" />
     <text name="AdminEmailAddress" value="Admin email address" />
     <text name="AdminPassword" value="Admin password" />

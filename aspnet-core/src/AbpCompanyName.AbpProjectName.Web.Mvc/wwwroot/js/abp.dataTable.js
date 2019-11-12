@@ -36,12 +36,13 @@
         ordering: false,
         language: language,
         processing: true,
+        autoWidth: false,
         dom: [
             "<'row'<'col-md-12'f>>",
             "<'row'<'col-md-12't>>",
             "<'row mt-2'",
             "<'col-lg-1 col-xs-12'<'float-left text-center data-tables-refresh'B>>",
-            "<'col-lg-3 col-xs-12'<'float-left text-center'i>>",            
+            "<'col-lg-3 col-xs-12'<'float-left text-center'i>>",
             "<'col-lg-3 col-xs-12'<'text-center'l>>",
             "<'col-lg-5 col-xs-12'<'float-right'p>>",
             ">"

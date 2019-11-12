@@ -8,6 +8,7 @@
     var _$tenantsTable = _$table.DataTable({
         paging: true,
         serverSide: true,
+
         ajax: function (data, callback, settings) {
             var filter = $('#TenantsSearchForm').serializeFormToObject(true);
             filter.maxResultCount = data.length;
@@ -146,12 +147,17 @@
     }
 
     _modal.on('shown.bs.modal', () => {
-        _modal.find('input:not([type=hidden]):first').focus();
+        //_modal.find('input:not([type=hidden]):first').focus();
     }).on('hidden.bs.modal', () => {
         _$form.clearForm();
     });
 
-    $('.btn-search').on('click', function (e) {
+    $('.btn-search').on('click', (e) => {
+        _$tenantsTable.ajax.reload();
+    });
+
+    $('.btn-clear').on('click', (e) => {
+        $('input[name=IsActive][value=""]').prop('checked', true);
         _$tenantsTable.ajax.reload();
     });
 })(jQuery);

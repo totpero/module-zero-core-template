@@ -37,6 +37,7 @@
         language: language,
         processing: true,
         autoWidth: false,
+        responsive: true,
         dom: [
             "<'row'<'col-md-12'f>>",
             "<'row'<'col-md-12't>>",

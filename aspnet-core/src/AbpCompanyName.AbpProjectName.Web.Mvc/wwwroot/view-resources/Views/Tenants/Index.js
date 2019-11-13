@@ -8,7 +8,6 @@
     var _$tenantsTable = _$table.DataTable({
         paging: true,
         serverSide: true,
-
         ajax: function (data, callback, settings) {
             var filter = $('#TenantsSearchForm').serializeFormToObject(true);
             filter.maxResultCount = data.length;
@@ -32,9 +31,19 @@
                 action: () => _$tenantsTable.draw(false)
             }
         ],
+        responsive: {
+            details: {
+                type: 'column'
+            }
+        },
         columnDefs: [
             {
                 targets: 0,
+                className: 'control',
+                defaultContent: '',
+            },
+            {
+                targets: 1,
                 data: null,
                 sortable: false,
                 autoWidth: false,
@@ -57,17 +66,17 @@
                 }
             },
             {
-                targets: 1,
+                targets: 2,
                 data: 'tenancyName',
                 sortable: false
             },
             {
-                targets: 2,
+                targets: 3,
                 data: 'name',
                 sortable: false
             },
             {
-                targets: 3,
+                targets: 4,
                 data: 'isActive',
                 sortable: false,
                 render: data => `<input type="checkbox" disabled ${data ? 'checked' : ''}>`
@@ -147,7 +156,7 @@
     }
 
     _modal.on('shown.bs.modal', () => {
-        //_modal.find('input:not([type=hidden]):first').focus();
+        _modal.find('input:not([type=hidden]):first').focus();
     }).on('hidden.bs.modal', () => {
         _$form.clearForm();
     });

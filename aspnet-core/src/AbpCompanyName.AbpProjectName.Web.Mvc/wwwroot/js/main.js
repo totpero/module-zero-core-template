@@ -132,12 +132,12 @@
         $this[0].reset();
     };
 
-    $(document).on('shown.bs.modal', '.modal', function () {
-        var $form = $(this).find('form');
+    //$(document).on('shown.bs.modal', '.modal', function () {
+    //    var $form = $(this).find('form');
 
-        if ($form && $form.length > 0) {
-            var $firstEl = $($form[0]).find('input[type=text]:first');
-            $firstEl.focus();
-        }
-    });
+    //    if ($form && $form.length > 0) {
+    //        var $firstEl = $($form[0]).find('input[type=text]:first');
+    //        $firstEl.focus();
+    //    }
+    //});
 })(jQuery);

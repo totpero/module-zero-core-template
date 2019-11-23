@@ -1,7 +1,5 @@
 ﻿@using System.Globalization
 @using Abp.Web.Security.AntiForgery
-@using Abp.Configuration;
-@using AbpCompanyName.AbpProjectName.Configuration
 @using AbpCompanyName.AbpProjectName.Web.Resources
 @using AbpCompanyName.AbpProjectName.Web.Views.Shared.Components.ControlSidebar
 @inject AbpCompanyName.AbpProjectName.Timing.AppTimes AppTimes
@@ -15,8 +13,7 @@
     pageTitle += "AbpProjectName";
 }
 <!DOCTYPE html>
-<html lang="@LanguageManager.CurrentLanguage.Name"
-      @(LanguageManager.CurrentLanguage.IsRightToLeft ? Html.Raw(" dir=\"rtl\"") : null)>
+<html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">

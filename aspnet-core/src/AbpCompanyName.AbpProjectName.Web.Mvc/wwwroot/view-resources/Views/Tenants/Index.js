@@ -129,7 +129,7 @@
         });
     });
 
-    abp.event.on('tenant.edited', function (data) {
+    abp.event.on('tenant.edited', (data) => {
         _$tenantsTable.ajax.reload();
     });
 
@@ -140,13 +140,13 @@
                 tenancyName
             ),
             null,
-            function (isConfirmed) {
+            (isConfirmed) => {
                 if (isConfirmed) {
                     _tenantService
                         .delete({
                             id: tenantId
                         })
-                        .done(function () {
+                        .done(() => {
                             abp.notify.info(l('SuccessfullyDeleted'));
                             _$tenantsTable.ajax.reload();
                         });
@@ -166,7 +166,15 @@
     });
 
     $('.btn-clear').on('click', (e) => {
+        $('input[name=Keyword]').val('');
         $('input[name=IsActive][value=""]').prop('checked', true);
         _$tenantsTable.ajax.reload();
+    });
+
+    $('.txt-search').on('keypress', (e) => {
+        if (e.which == 13) {
+            _$tenantsTable.ajax.reload();
+            return false;
+        }
     });
 })(jQuery);

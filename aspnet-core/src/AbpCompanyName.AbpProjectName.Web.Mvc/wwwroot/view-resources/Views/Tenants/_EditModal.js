@@ -21,13 +21,11 @@
         });
     }
 
-    //Handle save button click
     _$form.closest('div.modal-content').find(".save-button").click(function (e) {
         e.preventDefault();
         save();
     });
 
-    //Handle enter key
     _$form.find('input').on('keypress', function (e) {
         if (e.which === 13) {
             e.preventDefault();
